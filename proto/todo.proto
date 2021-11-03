@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package todo;
+option go_package = "../../generated/todopb";
+
+message Todo {
+    string id = 1;
+    string todo_name = 2;
+    string todo_list_name = 3;
+    int64 created_at = 4;
+    int64 updated_at = 5;
+    string content = 6;
+    bool done = 7;
+}
+
+message TodoList {
+    string id = 1;
+    string todo_list_name = 2;
+    int64 created_at = 3;
+    int64 updated_at = 4;
+}
+
+message CreateTodoListRequest {
+    TodoList todo_list = 1;
+}
+
+message CreateTodoListResponse {
+    string response = 1;
+}
+
+message CreateTodoRequest {
+    Todo todo = 1;
+}
+
+message CreateTodoResponse {
+    string response = 1;
+}
+
+service TodoService {
+    rpc CreateTodoList (CreateTodoListRequest) returns (CreateTodoListResponse);
+    rpc CreateTodo (CreateTodoRequest) returns (CreateTodoResponse);
+}
