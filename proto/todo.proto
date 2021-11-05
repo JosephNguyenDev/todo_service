@@ -44,15 +44,15 @@ message GetTodosFromListResponse {
 }
 
 message DeleteTodoByIdRequest {
-    string id = 1;
+    int32 id = 1;
 }
 
-message DeleteTodoListIdRequest {
-    string id = 1;
+message DeleteTodoListByIdRequest {
+    int32 id = 1;
 }
 
 message GetTodoByIdRequest {
-    string id = 1;
+    int32 id = 1;
 }
 
 message GetTodoByIdResponse {
@@ -64,7 +64,8 @@ message GetAllTodosResponse {
 }
 
 message UpdateTodoNameByIdRequest {
-    string id = 1;
+    int32 id = 1;
+    string name = 2;
 }
 
 message UpdateTodoNameByIdResponse {
@@ -72,7 +73,8 @@ message UpdateTodoNameByIdResponse {
 }
 
 message UpdateTodoContentByIdRequest {
-    string id = 1;
+    int32 id = 1;
+    string content = 2;
 }
 
 message UpdateTodoContentByIdResponse {
@@ -80,18 +82,20 @@ message UpdateTodoContentByIdResponse {
 }
 
 message UpdateTodoStatusByIdRequest {
-    string id = 1;
+    int32 id = 1;
+    bool done = 2;
 }
 
 message UpdateTodoStatusByIdResponse {
     string response = 1;
 }
 
-message UpdateTodoListByIdRequest {
-    string id = 1;
+message UpdateTodoListNameByIdRequest {
+    int32 id = 1;
+    string name = 2;
 }
 
-message UpdateTodoListByIdResponse {
+message UpdateTodoListNameByIdResponse {
     string response = 1;
 }
 
@@ -101,12 +105,11 @@ service TodoService {
     rpc GetTodosFromList (GetTodosFromListRequest) returns (GetTodosFromListResponse);
     rpc GetTodoLists (google.protobuf.Empty) returns (GetTodoListsResponse);
     rpc DeleteTodoById (DeleteTodoByIdRequest) returns (google.protobuf.Empty);
-    rpc DeleteTodoListById (DeleteTodoListIdRequest) returns (google.protobuf.Empty);
+    rpc DeleteTodoListById (DeleteTodoListByIdRequest) returns (google.protobuf.Empty);
     rpc GetTodoById (GetTodoByIdRequest) returns (GetTodoByIdResponse);
     rpc GetAllTodos (google.protobuf.Empty) returns (GetAllTodosResponse);
     rpc UpdateTodoNameById (UpdateTodoNameByIdRequest) returns (UpdateTodoNameByIdResponse);
-    rpc UpdateTodoContentById (UpdateTodoContentByIdRequest) returns (UpdateTodoContentByIdRequest);
-    rpc UpdateTodoStatusById (UpdateTodoStatusByIdRequest) returns (UpdateTodoStatusByIdRequest);
-    rpc UpdateTodoListById (UpdateTodoListByIdRequest) returns (UpdateTodoListByIdRequest);
-
+    rpc UpdateTodoContentById (UpdateTodoContentByIdRequest) returns (UpdateTodoContentByIdResponse);
+    rpc UpdateTodoStatusById (UpdateTodoStatusByIdRequest) returns (UpdateTodoStatusByIdResponse);
+    rpc UpdateTodoListById (UpdateTodoListNameByIdRequest) returns (UpdateTodoListNameByIdResponse);
 }

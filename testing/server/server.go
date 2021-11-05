@@ -28,7 +28,8 @@ func (*server) CreateTodoList(ctx context.Context, req *pb.CreateTodoListRequest
 		ctx,
 		sql.NullString{
 			String: req.TodoList.GetTodoListName(),
-			Valid:  true},
+			Valid:  true,
+		},
 	)
 
 	if err != nil {
@@ -73,7 +74,8 @@ func (*server) GetTodosFromList(ctx context.Context, req *pb.GetTodosFromListReq
 		ctx,
 		sql.NullString{
 			String: req.GetList(),
-			Valid:  true},
+			Valid:  true,
+		},
 	)
 	if err != nil {
 		return nil, err
@@ -91,6 +93,112 @@ func (*server) GetTodoLists(ctx context.Context, _ *emptypb.Empty) (*pb.GetTodoL
 	}
 	s, err := json.MarshalIndent(res, "", " ")
 	return &pb.GetTodoListsResponse{
+		Response: string(s),
+	}, err
+}
+
+func (*server) DeleteTodoById(ctx context.Context, req *pb.DeleteTodoByIdRequest) (*emptypb.Empty, error) {
+	err := DB.DeleteTodoById(ctx, req.GetId())
+	return nil, err
+}
+
+func (*server) DeleteTodoListById(ctx context.Context, req *pb.DeleteTodoListByIdRequest) (*emptypb.Empty, error) {
+	err := DB.DeleteTodoListById(ctx, req.GetId())
+	return nil, err
+}
+
+func (*server) GetTodoById(ctx context.Context, req *pb.GetTodoByIdRequest) (*pb.GetTodoByIdResponse, error) {
+	res, err := DB.GetTodoById(ctx, req.GetId())
+	if err != nil {
+		return nil, err
+	}
+	s, err := json.MarshalIndent(res, "", " ")
+	return &pb.GetTodoByIdResponse{
+		Response: string(s),
+	}, err
+}
+
+func (*server) GetAllTodos(ctx context.Context, _ *emptypb.Empty) (*pb.GetAllTodosResponse, error) {
+	res, err := DB.GetAllTodos(ctx)
+	if err != nil {
+		return nil, err
+	}
+	s, err := json.MarshalIndent(res, "", " ")
+	return &pb.GetAllTodosResponse{
+		Response: string(s),
+	}, err
+}
+
+func (*server) UpdateTodoNameById(ctx context.Context, req *pb.UpdateTodoNameByIdRequest) (*pb.UpdateTodoNameByIdResponse, error) {
+	res, err := DB.UpdateTodoNameById(
+		ctx,
+		querier.UpdateTodoNameByIdParams{
+			ID: req.GetId(),
+			TodoName: sql.NullString{
+				String: req.GetName(),
+				Valid:  true,
+			},
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	s, err := json.MarshalIndent(res, "", " ")
+	return &pb.UpdateTodoNameByIdResponse{
+		Response: string(s),
+	}, err
+}
+
+func (*server) UpdateContentTodoById(ctx context.Context, req *pb.UpdateTodoContentByIdRequest) (*pb.UpdateTodoContentByIdResponse, error) {
+	res, err := DB.UpdateTodoContentById(
+		ctx,
+		querier.UpdateTodoContentByIdParams{
+			ID:      req.GetId(),
+			Content: req.GetContent(),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	s, err := json.MarshalIndent(res, "", " ")
+	return &pb.UpdateTodoContentByIdResponse{
+		Response: string(s),
+	}, err
+}
+
+func (*server) UpdateTodoStatusById(ctx context.Context, req *pb.UpdateTodoStatusByIdRequest) (*pb.UpdateTodoStatusByIdResponse, error) {
+	res, err := DB.UpdateTodoStatusById(
+		ctx,
+		querier.UpdateTodoStatusByIdParams{
+			ID:   req.GetId(),
+			Done: req.GetDone(),
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	s, err := json.MarshalIndent(res, "", " ")
+	return &pb.UpdateTodoStatusByIdResponse{
+		Response: string(s),
+	}, err
+}
+
+func (*server) UpdateTodoListNameById(ctx context.Context, req *pb.UpdateTodoListNameByIdRequest) (*pb.UpdateTodoListNameByIdResponse, error) {
+	res, err := DB.UpdateTodoListNameById(
+		ctx,
+		querier.UpdateTodoListNameByIdParams{
+			ID: req.GetId(),
+			TodoListName: sql.NullString{
+				String: req.GetName(),
+				Valid:  true,
+			},
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+	s, err := json.MarshalIndent(res, "", " ")
+	return &pb.UpdateTodoListNameByIdResponse{
 		Response: string(s),
 	}, err
 }

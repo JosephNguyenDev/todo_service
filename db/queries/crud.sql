@@ -46,4 +46,4 @@ WHERE id = $1 RETURNING *;
 -- name: UpdateTodoListNameById :one
 UPDATE todo_list
 SET todo_list_name = $2
-WHERE todo_list_name = $1 RETURNING *;
+WHERE id = $1 RETURNING *;
