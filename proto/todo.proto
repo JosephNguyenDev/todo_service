@@ -43,9 +43,70 @@ message GetTodosFromListResponse {
     string response = 1;
 }
 
+message DeleteTodoByIdRequest {
+    string id = 1;
+}
+
+message DeleteTodoListIdRequest {
+    string id = 1;
+}
+
+message GetTodoByIdRequest {
+    string id = 1;
+}
+
+message GetTodoByIdResponse {
+    string response = 1;
+}
+
+message GetAllTodosResponse {
+    string response = 1;
+}
+
+message UpdateTodoNameByIdRequest {
+    string id = 1;
+}
+
+message UpdateTodoNameByIdResponse {
+    string response = 1;
+}
+
+message UpdateTodoContentByIdRequest {
+    string id = 1;
+}
+
+message UpdateTodoContentByIdResponse {
+    string response = 1;
+}
+
+message UpdateTodoStatusByIdRequest {
+    string id = 1;
+}
+
+message UpdateTodoStatusByIdResponse {
+    string response = 1;
+}
+
+message UpdateTodoListByIdRequest {
+    string id = 1;
+}
+
+message UpdateTodoListByIdResponse {
+    string response = 1;
+}
+
 service TodoService {
     rpc CreateTodoList (CreateTodoListRequest) returns (CreateTodoListResponse);
     rpc CreateTodo (CreateTodoRequest) returns (CreateTodoResponse);
     rpc GetTodosFromList (GetTodosFromListRequest) returns (GetTodosFromListResponse);
     rpc GetTodoLists (google.protobuf.Empty) returns (GetTodoListsResponse);
+    rpc DeleteTodoById (DeleteTodoByIdRequest) returns (google.protobuf.Empty);
+    rpc DeleteTodoListById (DeleteTodoListIdRequest) returns (google.protobuf.Empty);
+    rpc GetTodoById (GetTodoByIdRequest) returns (GetTodoByIdResponse);
+    rpc GetAllTodos (google.protobuf.Empty) returns (GetAllTodosResponse);
+    rpc UpdateTodoNameById (UpdateTodoNameByIdRequest) returns (UpdateTodoNameByIdResponse);
+    rpc UpdateTodoContentById (UpdateTodoContentByIdRequest) returns (UpdateTodoContentByIdRequest);
+    rpc UpdateTodoStatusById (UpdateTodoStatusByIdRequest) returns (UpdateTodoStatusByIdRequest);
+    rpc UpdateTodoListById (UpdateTodoListByIdRequest) returns (UpdateTodoListByIdRequest);
+
 }

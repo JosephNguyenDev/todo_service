@@ -13,11 +13,11 @@ WHERE todo_list_name = $1;
 -- name: GetTodoLists :many
 SELECT * FROM todo_list;
 
--- name: DeleteTodo :exec
+-- name: DeleteTodoById :exec
 DELETE FROM todo
 WHERE id = $1;
 
--- name: DeleteTodoList :exec
+-- name: DeleteTodoListById :exec
 DELETE FROM todo_list
 WHERE id = $1;
 
@@ -28,22 +28,22 @@ WHERE id = $1;
 -- name: GetAllTodos :many
 SELECT * FROM todo;
 
--- name: UpdateTodoNameById :exec
+-- name: UpdateTodoNameById :one
 UPDATE todo
 SET todo_name = $2
-WHERE id = $1;
+WHERE id = $1 RETURNING *;
 
--- name: UpdateTodoContentById :exec
+-- name: UpdateTodoContentById :one
 UPDATE todo
 SET content = $2
-WHERE id = $1;
+WHERE id = $1 RETURNING *;
 
--- name: UpdateTodoStatusById :exec
+-- name: UpdateTodoStatusById :one
 UPDATE todo
 SET done = $2
-WHERE id = $1;
+WHERE id = $1 RETURNING *;
 
--- name: UpdateTodoListNameById :exec
+-- name: UpdateTodoListNameById :one
 UPDATE todo_list
 SET todo_list_name = $2
-WHERE todo_list_name = $1;
+WHERE todo_list_name = $1 RETURNING *;
