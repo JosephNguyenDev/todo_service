@@ -1,5 +1,6 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
 package todo;
 option go_package = "../generated/todopb";
 
@@ -30,7 +31,21 @@ message CreateTodoResponse {
     string response = 1;
 }
 
+message GetTodoListsResponse {
+    string response = 1;
+}
+
+message GetTodosFromListRequest {
+    string list = 1;
+}
+
+message GetTodosFromListResponse {
+    string response = 1;
+}
+
 service TodoService {
     rpc CreateTodoList (CreateTodoListRequest) returns (CreateTodoListResponse);
     rpc CreateTodo (CreateTodoRequest) returns (CreateTodoResponse);
+    rpc GetTodosFromList (GetTodosFromListRequest) returns (GetTodosFromListResponse);
+    rpc GetTodoLists (google.protobuf.Empty) returns (GetTodoListsResponse);
 }

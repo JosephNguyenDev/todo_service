@@ -9,14 +9,15 @@ import (
 	"net"
 
 	_ "github.com/lib/pq"
-	todo "github.com/todo_service/generated"
+	querier "github.com/todo_service/generated/queries"
 	pb "github.com/todo_service/generated/todopb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // global database variable
-var DB *todo.Queries
+var DB *querier.Queries
 
 type server struct {
 	pb.UnimplementedTodoServiceServer
@@ -24,9 +25,9 @@ type server struct {
 
 func (*server) CreateTodoList(ctx context.Context, req *pb.CreateTodoListRequest) (*pb.CreateTodoListResponse, error) {
 	res, err := DB.CreateTodoList(
-		context.Background(),
+		ctx,
 		sql.NullString{
-			String: req.TodoList.TodoListName,
+			String: req.TodoList.GetTodoListName(),
 			Valid:  true},
 	)
 
@@ -34,33 +35,62 @@ func (*server) CreateTodoList(ctx context.Context, req *pb.CreateTodoListRequest
 		return nil, err
 	}
 
-	s, err := json.Marshal(res)
+	s, err := json.MarshalIndent(res, "", " ")
 	return &pb.CreateTodoListResponse{
 		Response: string(s),
 	}, err
 }
 
 func (*server) CreateTodo(ctx context.Context, req *pb.CreateTodoRequest) (*pb.CreateTodoResponse, error) {
-
-	res, err := DB.CreateTodo(context.Background(), todo.CreateTodoParams{
-		TodoName: sql.NullString{
-			String: req.Todo.TodoName,
-			Valid:  true,
+	res, err := DB.CreateTodo(
+		ctx,
+		querier.CreateTodoParams{
+			TodoName: sql.NullString{
+				String: req.Todo.GetTodoName(),
+				Valid:  true,
+			},
+			TodoListName: sql.NullString{
+				String: req.Todo.GetTodoListName(),
+				Valid:  true,
+			},
+			Content: req.Todo.Content,
+			Done:    req.Todo.Done,
 		},
-		TodoListName: sql.NullString{
-			String: req.Todo.TodoListName,
-			Valid:  true,
-		},
-		Content: req.Todo.Content,
-		Done:    req.Todo.Done,
-	})
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	s, err := json.Marshal(res)
+	s, err := json.MarshalIndent(res, "", " ")
 	return &pb.CreateTodoResponse{
+		Response: string(s),
+	}, err
+}
+
+func (*server) GetTodosFromList(ctx context.Context, req *pb.GetTodosFromListRequest) (*pb.GetTodosFromListResponse, error) {
+	res, err := DB.GetTodosFromList(
+		ctx,
+		sql.NullString{
+			String: req.GetList(),
+			Valid:  true},
+	)
+	if err != nil {
+		return nil, err
+	}
+	s, err := json.MarshalIndent(res, "", " ")
+	return &pb.GetTodosFromListResponse{
+		Response: string(s),
+	}, err
+}
+
+func (*server) GetTodoLists(ctx context.Context, _ *emptypb.Empty) (*pb.GetTodoListsResponse, error) {
+	res, err := DB.GetTodoLists(ctx)
+	if err != nil {
+		return nil, err
+	}
+	s, err := json.MarshalIndent(res, "", " ")
+	return &pb.GetTodoListsResponse{
 		Response: string(s),
 	}, err
 }
@@ -77,7 +107,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-	db := todo.New(conn)
+	db := querier.New(conn)
 	DB = db
 	fmt.Println("Established database connection")
 
