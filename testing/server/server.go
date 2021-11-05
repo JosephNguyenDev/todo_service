@@ -99,12 +99,12 @@ func (*server) GetTodoLists(ctx context.Context, _ *emptypb.Empty) (*pb.GetTodoL
 
 func (*server) DeleteTodoById(ctx context.Context, req *pb.DeleteTodoByIdRequest) (*emptypb.Empty, error) {
 	err := DB.DeleteTodoById(ctx, req.GetId())
-	return nil, err
+	return &emptypb.Empty{}, err
 }
 
 func (*server) DeleteTodoListById(ctx context.Context, req *pb.DeleteTodoListByIdRequest) (*emptypb.Empty, error) {
 	err := DB.DeleteTodoListById(ctx, req.GetId())
-	return nil, err
+	return &emptypb.Empty{}, err
 }
 
 func (*server) GetTodoById(ctx context.Context, req *pb.GetTodoByIdRequest) (*pb.GetTodoByIdResponse, error) {
@@ -149,7 +149,7 @@ func (*server) UpdateTodoNameById(ctx context.Context, req *pb.UpdateTodoNameByI
 	}, err
 }
 
-func (*server) UpdateContentTodoById(ctx context.Context, req *pb.UpdateTodoContentByIdRequest) (*pb.UpdateTodoContentByIdResponse, error) {
+func (*server) UpdateTodoContentById(ctx context.Context, req *pb.UpdateTodoContentByIdRequest) (*pb.UpdateTodoContentByIdResponse, error) {
 	res, err := DB.UpdateTodoContentById(
 		ctx,
 		querier.UpdateTodoContentByIdParams{

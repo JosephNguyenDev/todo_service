@@ -28,6 +28,7 @@ if [ -n "$1" ]; then
     help) echo "$help";;
     server) go run testing/server/server.go;;
     test) 
+        migrate -path db/schema -database ${POSTGRESQL_URL} force 1;
         migrate -database ${POSTGRESQL_URL} -path db/schema down <<< 'y';
         migrate -database ${POSTGRESQL_URL} -path db/schema up;
         go run testing/client/client.go;;

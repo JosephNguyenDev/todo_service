@@ -30,7 +30,7 @@ type TodoServiceClient interface {
 	UpdateTodoNameById(ctx context.Context, in *UpdateTodoNameByIdRequest, opts ...grpc.CallOption) (*UpdateTodoNameByIdResponse, error)
 	UpdateTodoContentById(ctx context.Context, in *UpdateTodoContentByIdRequest, opts ...grpc.CallOption) (*UpdateTodoContentByIdResponse, error)
 	UpdateTodoStatusById(ctx context.Context, in *UpdateTodoStatusByIdRequest, opts ...grpc.CallOption) (*UpdateTodoStatusByIdResponse, error)
-	UpdateTodoListById(ctx context.Context, in *UpdateTodoListNameByIdRequest, opts ...grpc.CallOption) (*UpdateTodoListNameByIdResponse, error)
+	UpdateTodoListNameById(ctx context.Context, in *UpdateTodoListNameByIdRequest, opts ...grpc.CallOption) (*UpdateTodoListNameByIdResponse, error)
 }
 
 type todoServiceClient struct {
@@ -140,9 +140,9 @@ func (c *todoServiceClient) UpdateTodoStatusById(ctx context.Context, in *Update
 	return out, nil
 }
 
-func (c *todoServiceClient) UpdateTodoListById(ctx context.Context, in *UpdateTodoListNameByIdRequest, opts ...grpc.CallOption) (*UpdateTodoListNameByIdResponse, error) {
+func (c *todoServiceClient) UpdateTodoListNameById(ctx context.Context, in *UpdateTodoListNameByIdRequest, opts ...grpc.CallOption) (*UpdateTodoListNameByIdResponse, error) {
 	out := new(UpdateTodoListNameByIdResponse)
-	err := c.cc.Invoke(ctx, "/todo.TodoService/UpdateTodoListById", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/todo.TodoService/UpdateTodoListNameById", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -164,7 +164,7 @@ type TodoServiceServer interface {
 	UpdateTodoNameById(context.Context, *UpdateTodoNameByIdRequest) (*UpdateTodoNameByIdResponse, error)
 	UpdateTodoContentById(context.Context, *UpdateTodoContentByIdRequest) (*UpdateTodoContentByIdResponse, error)
 	UpdateTodoStatusById(context.Context, *UpdateTodoStatusByIdRequest) (*UpdateTodoStatusByIdResponse, error)
-	UpdateTodoListById(context.Context, *UpdateTodoListNameByIdRequest) (*UpdateTodoListNameByIdResponse, error)
+	UpdateTodoListNameById(context.Context, *UpdateTodoListNameByIdRequest) (*UpdateTodoListNameByIdResponse, error)
 	mustEmbedUnimplementedTodoServiceServer()
 }
 
@@ -205,8 +205,8 @@ func (UnimplementedTodoServiceServer) UpdateTodoContentById(context.Context, *Up
 func (UnimplementedTodoServiceServer) UpdateTodoStatusById(context.Context, *UpdateTodoStatusByIdRequest) (*UpdateTodoStatusByIdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateTodoStatusById not implemented")
 }
-func (UnimplementedTodoServiceServer) UpdateTodoListById(context.Context, *UpdateTodoListNameByIdRequest) (*UpdateTodoListNameByIdResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateTodoListById not implemented")
+func (UnimplementedTodoServiceServer) UpdateTodoListNameById(context.Context, *UpdateTodoListNameByIdRequest) (*UpdateTodoListNameByIdResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateTodoListNameById not implemented")
 }
 func (UnimplementedTodoServiceServer) mustEmbedUnimplementedTodoServiceServer() {}
 
@@ -419,20 +419,20 @@ func _TodoService_UpdateTodoStatusById_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
-func _TodoService_UpdateTodoListById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _TodoService_UpdateTodoListNameById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateTodoListNameByIdRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TodoServiceServer).UpdateTodoListById(ctx, in)
+		return srv.(TodoServiceServer).UpdateTodoListNameById(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/todo.TodoService/UpdateTodoListById",
+		FullMethod: "/todo.TodoService/UpdateTodoListNameById",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TodoServiceServer).UpdateTodoListById(ctx, req.(*UpdateTodoListNameByIdRequest))
+		return srv.(TodoServiceServer).UpdateTodoListNameById(ctx, req.(*UpdateTodoListNameByIdRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -489,8 +489,8 @@ var TodoService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _TodoService_UpdateTodoStatusById_Handler,
 		},
 		{
-			MethodName: "UpdateTodoListById",
-			Handler:    _TodoService_UpdateTodoListById_Handler,
+			MethodName: "UpdateTodoListNameById",
+			Handler:    _TodoService_UpdateTodoListNameById_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

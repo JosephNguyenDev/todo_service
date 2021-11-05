@@ -111,5 +111,5 @@ service TodoService {
     rpc UpdateTodoNameById (UpdateTodoNameByIdRequest) returns (UpdateTodoNameByIdResponse);
     rpc UpdateTodoContentById (UpdateTodoContentByIdRequest) returns (UpdateTodoContentByIdResponse);
     rpc UpdateTodoStatusById (UpdateTodoStatusByIdRequest) returns (UpdateTodoStatusByIdResponse);
-    rpc UpdateTodoListById (UpdateTodoListNameByIdRequest) returns (UpdateTodoListNameByIdResponse);
+    rpc UpdateTodoListNameById (UpdateTodoListNameByIdRequest) returns (UpdateTodoListNameByIdResponse);
 }
